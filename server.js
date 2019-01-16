@@ -42,5 +42,21 @@ server.get(`${url}/:id`, async(req, res) => {
     }
 });
 
+server.post(url, async(req, res) => {
+    const { name } = req.body;
+    try{
+        if (!name) {
+            res.status(404).json(`{error: 'Please enter name'}`)
+        } else {
+            const results = await db('zoos').insert(req.body)
+            res.status(201).json(results)
+        }
+    }catch(err){
+        res.status(500).json(`{error: 'data not created'}`)
+    }
+});
+
+
+
 
 module.exports = server
