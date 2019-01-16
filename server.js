@@ -56,6 +56,21 @@ server.post(url, async(req, res) => {
     }
 });
 
+server.put(`${url}/:id`, async(req, res) => {
+    const data = req.body;
+    const { name } = req.body
+    try{
+        const results = await db('zoos').where({ id: req.params.id}).update(data)
+        if(!name){
+            res.status(404).json(`{error: 'Please enter zoo's name}`)
+        } else {
+            res.status(200).json(results)
+        }
+    }catch(err){
+        res.status(500).json(err)
+    }
+});
+
 server.delete('/api/zoos/:id', async(req, res) => {
 
     const { id } = req.params;
@@ -80,5 +95,6 @@ server.delete('/api/zoos/:id', async(req, res) => {
     //   .catch(err => res.status(500).json(err));
   });
 
+ 
 
 module.exports = server
