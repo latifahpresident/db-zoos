@@ -56,7 +56,29 @@ server.post(url, async(req, res) => {
     }
 });
 
+server.delete('/api/zoos/:id', async(req, res) => {
 
+    const { id } = req.params;
+    db(id)
+    try{
+        const data = await db('zoos')
+            .where({ id: req.params.id }).del()
+            if(data) {
+                res.status(204).json(data)
+            } else {
+                res.status(404).json(`{error: 'That ID was  not found'}`)
+            }
+    }catch(err){
+        res.status(500).json(err)
+    }
+    // db('zoos')
+    //   .where({ id: req.params.id })
+    //   .del()
+    //   .then(count => {
+    //     res.status(200).json(count);
+    //   })
+    //   .catch(err => res.status(500).json(err));
+  });
 
 
 module.exports = server
